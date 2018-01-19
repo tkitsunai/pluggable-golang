@@ -1,0 +1,17 @@
+plugins:
+  -
+    bin_name: hello-world
+    path: hello-world
+    plugin_name: HelloPlugin
+    method: Say
+    params:
+      - tkitsunai
+  -
+    bin_name: echo
+    path: echo
+    plugin_name: EchoPlugin
+    method: Echo
+    params:
+      - hoge
+      - foo
+      - bar

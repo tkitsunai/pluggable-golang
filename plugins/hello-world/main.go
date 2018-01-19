@@ -6,8 +6,8 @@ import (
 
 type HelloPlugin struct{}
 
-func (p *HelloPlugin) Say(name string, msg *string) error {
-	*msg = "Hello, " + name
+func (p *HelloPlugin) Say(arg []string, response *string) error {
+	*response = "Hello, " + arg[0]
 	return nil
 }
 

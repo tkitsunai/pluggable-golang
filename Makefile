@@ -1,11 +1,14 @@
 # meta data
-NAME := pacman
+NAME := pluggable
 ENTRYPOINT := main.go
 
 dev: dep test osx-build-development
 
 dep:
 	dep ensure
+
+update:
+	dep ensure -update
 
 test:
 	go test -v ./...

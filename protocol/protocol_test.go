@@ -3,7 +3,7 @@ package protocol_test
 import (
 	"testing"
 
-	"github.com/tkitsunai/pacman/protocol"
+	"github.com/tkitsunai/pluggable-golang/protocol"
 )
 
 func TestProtocol_UNIXドメインソケットは文字列で表現することができる(t *testing.T) {

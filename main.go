@@ -1,23 +1,43 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/dullgiulio/pingo"
-	"github.com/tkitsunai/pacman/protocol"
+	"github.com/tkitsunai/pluggable-golang/conf"
+	"github.com/tkitsunai/pluggable-golang/global"
+	"github.com/tkitsunai/pluggable-golang/protocol"
 )
 
+func init() {
+	confPath := flag.String("f", "", "configuration file for plugins")
+	flag.Parse()
+	conf.LoadConfig(*confPath, &global.ConfigPlugins)
+}
+
 func main() {
-	p := pingo.NewPlugin(protocol.TCP.String(), "plugins/hello-world/hello-world")
+	RunPlugins()
+}
+
+func RunPlugins() {
+	for _, plugin := range global.ConfigPlugins.UsePlugins {
+		run(plugin)
+	}
+}
+
+func run(plugin conf.Plugin) {
+	path := "plugins/" + plugin.Path + "/" + plugin.BinName
+	p := pingo.NewPlugin(protocol.TCP.String(), path)
 	p.Start()
 	defer p.Stop()
 
-	var res string
-
-	err := p.Call("HelloPlugin.Say", "tkitsunai", &res)
+	var response string
+	fmt.Println("params:", plugin.Params)
+	err := p.Call(plugin.GetMethod(), plugin.Params, &response)
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(res)
+	fmt.Println("RPC Response", response)
 }
